@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Bracho Port System - Presentación de Tesis</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background: #0B192C;
+            height: 100vh;
+            width: 100vw;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ========== SLIDE CONTAINER ========== */
+        .slide-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 2rem 4rem 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            background: linear-gradient(135deg, #0B192C 0%, #1E3E62 50%, #0B192C 100%);
+            color: white;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.2rem;
+        }
+
+        /* ========== SLIDE TYPES - TAMAÑOS AUMENTADOS ========== */
+        .slide-title {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 900;
+            font-size: 3.8rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .slide-title .highlight {
+            color: #FF6500;
+        }
+
+        .slide-subtitle {
+            font-size: 1.4rem;
+            color: #94A3B8;
+            font-weight: 400;
+            max-width: 700px;
+        }
+
+        /* ========== ICON ANIMATIONS ========== */
+        .icon-float {
+            display: inline-block;
+            animation: floatAnim 3s ease-in-out infinite;
+        }
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .icon-pulse {
+            display: inline-block;
+            animation: pulseAnim 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseAnim {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.92); }
+        }
+
+        .icon-bounce {
+            display: inline-block;
+            animation: bounceAnim 2.8s ease-in-out infinite;
+        }
+        @keyframes bounceAnim {
+            0%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-2px); }
+        }
+
+        .icon-wiggle {
+            display: inline-block;
+            animation: wiggleAnim 2s ease-in-out infinite;
+        }
+        @keyframes wiggleAnim {
+            0%, 100% { transform: rotate(0); }
+            50% { transform: rotate(6deg); }
+        }
+
+        .icon-slide {
+            display: inline-block;
+            animation: slideAnim 2.2s ease-in-out infinite;
+        }
+        @keyframes slideAnim {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .icon-glow {
+            display: inline-block;
+            animation: glowAnim 3s ease-in-out infinite;
+        }
+        @keyframes glowAnim {
+            0%, 100% { filter: drop-shadow(0 0 2px rgba(255,101,0,0)); }
+            50% { filter: drop-shadow(0 0 12px rgba(255,101,0,0.3)); }
+        }
+
+        .icon-spin {
+            display: inline-block;
+            animation: spinAnim 4s linear infinite;
+        }
+        @keyframes spinAnim {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .icon-anchor {
+            display: inline-block;
+            animation: anchorAnim 4s ease-in-out infinite;
+        }
+        @keyframes anchorAnim {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        /* ========== LOGO INSTITUCIONAL ========== */
+        .logo-institucional {
+            height: 60px;
+            width: auto;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+            display: inline-block;
+        }
+
+        .logo-institucional:hover {
+            opacity: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ========== GRID CARDS ========== */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 101, 0, 0.1);
+            border-color: #FF6500;
+            transform: translateY(-4px);
+        }
+
+        .card .icon {
+            font-size: 2.2rem;
+            color: #FF6500;
+            margin-bottom: 0.6rem;
+            display: inline-block;
+        }
+
+        .card h4 {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+            font-family: 'Barlow', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #94A3B8;
+            line-height: 1.5;
+        }
+
+        /* ========== TWO COLUMN ========== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .col-left h2 {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 900;
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .col-left p {
+            color: #94A3B8;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-top: 0.75rem;
+        }
+
+        .col-right .highlight-box {
+            background: rgba(255, 101, 0, 0.08);
+            border-left: 4px solid #FF6500;
+            padding: 1.2rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .col-right .highlight-box:hover {
+            background: rgba(255, 101, 0, 0.14);
+        }
+
+        .col-right .highlight-box p {
+            color: #CBD5E1;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .col-right .highlight-box strong {
+            color: white;
+        }
+
+        /* ========== ROLE MATRIX - 7 ROLES ========== */
+        .role-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.7rem;
+            margin-top: 0.3rem;
+        }
+
+        .role-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.7rem 0.9rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .role-item:hover {
+            background: rgba(255, 101, 0, 0.08);
+            border-color: rgba(255, 101, 0, 0.2);
+        }
+
+        .role-item i {
+            color: #FF6500;
+            font-size: 1.1rem;
+            width: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .role-item .role-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-width: 85px;
+        }
+
+        .role-item .role-desc {
+            font-size: 0.78rem;
+            color: #94A3B8;
+        }
+
+        /* ========== OBJECTIVE LIST ========== */
+        .objective-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem 2rem;
+            margin-top: 0.3rem;
+        }
+
+        .objective-list li {
+            list-style: none;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 1rem;
+            color: #CBD5E1;
+            line-height: 1.5;
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .objective-list li:hover {
+            background: rgba(255, 101, 0, 0.06);
+        }
+
+        .objective-list li i {
+            color: #FF6500;
+            margin-top: 0.15rem;
+            font-size: 1rem;
+        }
+
+        .objective-list li strong {
+            font-size: 1.05rem;
+        }
+
+        /* ========== SHIPS IN WATER ========== */
+        .ocean-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            z-index: 50;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ocean-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(11, 25, 44, 0.0) 0%,
+                rgba(11, 25, 44, 0.2) 15%,
+                rgba(10, 30, 60, 0.5) 40%,
+                rgba(5, 20, 45, 0.8) 70%,
+                rgba(2, 10, 30, 1) 100%
+            );
+        }
+
+        .waves-svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 35px;
+            animation: waveMove 8s ease-in-out infinite alternate;
+        }
+
+        .waves-svg:nth-child(2) {
+            animation-duration: 10s;
+            animation-delay: -2s;
+            opacity: 0.5;
+            height: 26px;
+        }
+
+        .waves-svg:nth-child(3) {
+            animation-duration: 12s;
+            animation-delay: -4s;
+            opacity: 0.25;
+            height: 18px;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ship-container {
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            height: 28px;
+            pointer-events: none;
+        }
+
+        .ship-1 {
+            position: absolute;
+            animation: shipSail1 30s linear infinite;
+            opacity: 0.6;
+        }
+
+        .ship-2 {
+            position: absolute;
+            animation: shipSail2 38s linear infinite;
+            opacity: 0.45;
+            animation-delay: -10s;
+        }
+
+        .ship-3 {
+            position: absolute;
+            animation: shipSail3 45s linear infinite;
+            opacity: 0.3;
+            animation-delay: -20s;
+        }
+
+        .ship-1 svg, .ship-2 svg, .ship-3 svg {
+            filter: drop-shadow(0 1px 6px rgba(255, 101, 0, 0.08));
+        }
+
+        .ship-1 svg { width: 55px; height: 24px; }
+        .ship-2 svg { width: 42px; height: 18px; }
+        .ship-3 svg { width: 30px; height: 14px; }
+
+        @keyframes shipSail1 {
+            0% { left: -65px; transform: translateY(0px) scale(1); }
+            25% { transform: translateY(-1.5px) scale(1.02); }
+            50% { transform: translateY(0px) scale(1); }
+            75% { transform: translateY(1.5px) scale(0.98); }
+            100% { left: calc(100% + 30px); transform: translateY(0px) scale(1); }
+        }
+
+        @keyframes shipSail2 {
+            0% { left: -50px; transform: translateY(0px) scale(1); }
+            30% { transform: translateY(-1.5px) scale(1.02); }
+            60% { transform: translateY(1.5px) scale(0.98); }
+            100% { left: calc(100% + 25px); transform: translateY(0px) scale(1); }
+        }
+
+        @keyframes shipSail3 {
+            0% { left: -38px; transform: translateY(0px) scale(1); }
+            33% { transform: translateY(-1px) scale(1.03); }
+            66% { transform: translateY(1px) scale(0.97); }
+            100% { left: calc(100% + 20px); transform: translateY(0px) scale(1); }
+        }
+
+        .ship-bob {
+            animation: bob 2.5s ease-in-out infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        .ship-2 .ship-bob { animation-duration: 2.8s; animation-delay: 0.3s; }
+        .ship-3 .ship-bob { animation-duration: 3.2s; animation-delay: 0.7s; }
+
+        @keyframes bob {
+            0% { transform: translateY(0px) rotate(-0.4deg); }
+            100% { transform: translateY(-2.5px) rotate(0.4deg); }
+        }
+
+        /* ========== KEYBOARD HINT ========== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99;
+            color: #475569;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+            opacity: 0.4;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.25);
+            padding: 0.3rem 1rem;
+            border-radius: 9999px;
+            backdrop-filter: blur(4px);
+            transition: opacity 1.5s ease;
+        }
+
+        .keyboard-hint kbd {
+            background: rgba(255,255,255,0.08);
+            padding: 0.05rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #94A3B8;
+        }
+
+        .keyboard-hint.fade-out {
+            opacity: 0;
+        }
+
+        /* ========== RESPONSIVE - MEJORADO ========== */
+        
+        /* Tablets y pantallas medianas */
+        @media (max-width: 992px) {
+            .role-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .slide-title {
+                font-size: 3rem;
+            }
+            .two-col {
+                gap: 2rem;
+            }
+            .col-left h2 {
+                font-size: 2.3rem;
+            }
+        }
+
+        /* Móviles grandes y tablets pequeñas */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1.5rem 1.5rem 3.5rem 1.5rem;
+            }
+            .slide-title {
+                font-size: 2.5rem;
+            }
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .col-left h2 {
+                font-size: 2rem;
+            }
+            .col-left p {
+                font-size: 1rem;
+            }
+            .col-right .highlight-box p {
+                font-size: 0.92rem;
+            }
+            .role-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .role-item .role-name {
+                font-size: 0.82rem;
+                min-width: 70px;
+            }
+            .role-item .role-desc {
+                font-size: 0.7rem;
+            }
+            .objective-list {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+            }
+            .objective-list li {
+                font-size: 0.92rem;
+                padding: 0.2rem 0.4rem;
+            }
+            .objective-list li strong {
+                font-size: 0.95rem;
+            }
+            .grid-cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .card {
+                padding: 1.2rem 1rem;
+            }
+            .card .icon {
+                font-size: 1.8rem;
+            }
+            .card h4 {
+                font-size: 0.9rem;
+            }
+            .card p {
+                font-size: 0.82rem;
+            }
+            .logo-institucional {
+                height: 45px;
+            }
+            .logo-container {
+                gap: 0.6rem;
+            }
+            .logo-container span {
+                font-size: 0.7rem;
+            }
+            .ship-1 svg { width: 38px; height: 18px; }
+            .ship-2 svg { width: 30px; height: 14px; }
+            .ship-3 svg { width: 24px; height: 10px; }
+            .ocean-container { height: 50px; }
+            .ship-container { bottom: 6px; height: 22px; }
+            .keyboard-hint {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.8rem;
+                bottom: 4.2rem;
+            }
+        }
+
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
+            .slide {
+                padding: 1rem 1rem 3rem 1rem;
+            }
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            .slide-subtitle {
+                font-size: 0.95rem;
+            }
+            .two-col {
+                gap: 0.8rem;
+            }
+            .col-left h2 {
+                font-size: 1.5rem;
+            }
+            .col-left p {
+                font-size: 0.88rem;
+                margin-top: 0.4rem;
+            }
+            .col-right .highlight-box {
+                padding: 0.8rem 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .col-right .highlight-box p {
+                font-size: 0.82rem;
+            }
+            .role-grid {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+            }
+            .role-item {
+                padding: 0.5rem 0.7rem;
+            }
+            .role-item i {
+                font-size: 0.9rem;
+                width: 1.2rem;
+            }
+            .role-item .role-name {
+                font-size: 0.78rem;
+                min-width: 65px;
+            }
+            .role-item .role-desc {
+                font-size: 0.65rem;
+            }
+            .objective-list li {
+                font-size: 0.82rem;
+                padding: 0.15rem 0.3rem;
+                gap: 0.5rem;
+            }
+            .objective-list li strong {
+                font-size: 0.85rem;
+            }
+            .objective-list li i {
+                font-size: 0.8rem;
+                margin-top: 0.1rem;
+            }
+            .grid-cards {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+            .card {
+                padding: 0.9rem 0.8rem;
+            }
+            .card .icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+            }
+            .card h4 {
+                font-size: 0.8rem;
+            }
+            .card p {
+                font-size: 0.75rem;
+            }
+            .logo-institucional {
+                height: 35px;
+            }
+            .logo-container {
+                gap: 0.4rem;
+            }
+            .logo-container span {
+                font-size: 0.6rem;
+            }
+            .ocean-container { height: 40px; }
+            .ship-container { bottom: 5px; height: 18px; }
+            .ship-1 svg { width: 28px; height: 14px; }
+            .ship-2 svg { width: 22px; height: 10px; }
+            .ship-3 svg { width: 18px; height: 8px; }
+            .keyboard-hint { display: none; }
+            .waves-svg { height: 20px; }
+            .waves-svg:nth-child(2) { height: 16px; }
+            .waves-svg:nth-child(3) { height: 12px; }
+        }
+
+        /* Móviles muy pequeños (menos de 360px) */
+        @media (max-width: 360px) {
+            .slide-title {
+                font-size: 1.4rem;
+            }
+            .slide {
+                padding: 0.8rem 0.8rem 2.5rem 0.8rem;
+            }
+            .col-left h2 {
+                font-size: 1.2rem;
+            }
+            .col-left p {
+                font-size: 0.78rem;
+            }
+            .role-item .role-name {
+                font-size: 0.7rem;
+                min-width: 55px;
+            }
+            .role-item .role-desc {
+                font-size: 0.6rem;
+            }
+            .card h4 {
+                font-size: 0.7rem;
+            }
+            .card p {
+                font-size: 0.68rem;
+            }
+            .logo-institucional {
+                height: 28px;
+            }
+            .ocean-container { height: 35px; }
+            .ship-container { bottom: 4px; height: 14px; }
+            .ship-1 svg { width: 22px; height: 10px; }
+            .ship-2 svg { width: 18px; height: 8px; }
+            .ship-3 svg { width: 14px; height: 6px; }
+        }
+
+        /* ========== TRANSITIONS ========== */
+        .fade-in {
+            animation: fadeIn 0.7s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* ========== SCROLLBAR OCULTA ========== */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        * {
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SLIDE CONTAINER
+    ============================================================ -->
+    <div class="slide-container">
+
+        <!-- ==========================================================
+        SLIDE 1 — TITLE
+        ========================================================== -->
+        <div class="slide active" data-slide="0">
+            <div class="slide-content text-center">
+                <div class="fade-in">
+                    <div class="logo-container mb-3">
+                        <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
+                        <span class="text-[#FF6500] text-sm md:text-base font-bold tracking-widest uppercase font-['Barlow']">Trabajo de Grado — FP-UNA</span>
+                    </div>
+                    <h1 class="slide-title text-4xl md:text-6xl lg:text-7xl mt-1">
+                        Bracho<br><span class="highlight">Port System</span>
+                    </h1>
+                    <p class="text-lg md:text-2xl text-slate-300 mt-3 font-light leading-relaxed">
+                        Sistema de Gestión Integral para Empresas Tercerizadas<br class="hidden sm:block">
+                        de Mano de Obra en Operaciones de Carga Portuaria
+                    </p>
+                    <div class="mt-6 flex flex-wrap justify-center gap-3 md:gap-4 text-sm md:text-base text-slate-400">
+                        <span><i class="fa-solid fa-user-graduate text-[#FF6500] mr-2 icon-float"></i>Rodrigo Bracho</span>
+                        <span><i class="fa-solid fa-chalkboard-user text-[#FF6500] mr-2 icon-pulse"></i>Asesor: Christian Schaerer</span>
+                        <span><i class="fa-regular fa-calendar text-[#FF6500] mr-2 icon-bounce"></i>2026</span>
+                    </div>
+                    <div class="mt-5 flex flex-wrap justify-center gap-2 md:gap-3">
+                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-full text-xs md:text-sm font-bold text-[#FF6500] icon-glow">PHP • Laravel</span>
+                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-pulse">MySQL</span>
+                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-spin">MVC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 2 — CONTEXT & PROBLEM
+        ========================================================== -->
+        <div class="slide" data-slide="1">
+            <div class="slide-content">
+                <div class="two-col">
+                    <div class="col-left fade-in">
+                        <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Contexto</span>
+                        <h2>El <span class="text-[#FF6500]">Desafío</span> Logístico</h2>
+                        <p>
+                            Las empresas tercerizadas que proveen cuadrillas de estibaje para carga de barcazas graneleras administran de forma <strong class="text-white">desarticulada y empírica</strong> tres ejes críticos.
+                        </p>
+                        <ul class="mt-3 space-y-1.5 text-slate-300 text-sm md:text-base">
+                            <li><i class="fa-solid fa-circle-check text-[#FF6500] mr-2 icon-bounce"></i>Operación física de carga en muelle</li>
+                            <li><i class="fa-solid fa-circle-check text-[#FF6500] mr-2 icon-bounce" style="animation-delay:0.3s;"></i>Administración del capital humano</li>
+                            <li><i class="fa-solid fa-circle-check text-[#FF6500] mr-2 icon-bounce" style="animation-delay:0.6s;"></i>Control financiero y contable</li>
+                        </ul>
+                    </div>
+                    <div class="col-right fade-in delay-1">
+                        <div class="highlight-box">
+                            <p><i class="fa-solid fa-triangle-exclamation text-[#FF6500] mr-2 icon-pulse"></i><strong> Ineficiencias operativas</strong><br>Cálculo manual de calado y distribución de peso.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><i class="fa-solid fa-triangle-exclamation text-[#FF6500] mr-2 icon-pulse" style="animation-delay:0.2s;"></i><strong> Errores en liquidación</strong><br>Cálculo manual de haberes y descuentos legales.</p>
+                        </div>
+                        <div class="highlight-box">
+                            <p><i class="fa-solid fa-triangle-exclamation text-[#FF6500] mr-2 icon-pulse" style="animation-delay:0.4s;"></i><strong> Riesgos en navegabilidad</strong><br>Distribución inadecuada de pesos en la barcaza.</p>
+                        </div>
+                        <div class="highlight-box" style="border-color: #FF6500;">
+                            <p><i class="fa-solid fa-triangle-exclamation text-[#FF6500] mr-2 icon-pulse" style="animation-delay:0.6s;"></i><strong> Descontrol en productividad</strong><br>Sin métricas claras por cuadrilla y trabajador.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 3 — RESEARCH QUESTION & OBJECTIVE
+        ========================================================== -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content">
+                <div class="fade-in">
+                    <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Pregunta de Investigación</span>
+                    <p class="text-base md:text-xl lg:text-2xl text-slate-200 mt-1.5 font-light leading-relaxed max-w-4xl">
+                        <i class="fa-solid fa-question-circle text-[#FF6500] mr-2 md:mr-3 icon-wiggle"></i>
+                        ¿Cómo optimizar el proceso de carga de barcazas graneleras, la logística de traslado del personal y la gestión integral de una empresa tercerizada de servicios portuarios mediante un sistema informático?
+                    </p>
+                </div>
+                <div class="mt-4 md:mt-6 fade-in delay-1">
+                    <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Objetivo General</span>
+                    <p class="text-sm md:text-lg text-slate-300 mt-1 leading-relaxed max-w-4xl">
+                        <i class="fa-solid fa-bullseye text-[#FF6500] mr-2 md:mr-3 icon-spin"></i>
+                        Desarrollar un sistema informático de gestión integral para empresas tercerizadas de servicios portuarios que permita optimizar el proceso de carga de barcazas graneleras, coordinar la distribución de rutas de recogida del personal, gestionar el capital humano y controlar los procesos administrativos, de facturación y contabilidad en un entorno unificado.
+                    </p>
+                </div>
+                <div class="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 fade-in delay-2">
+                    <div class="flex items-center gap-2 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-lg border border-white/5 hover:bg-white/10 transition">
+                        <i class="fa-solid fa-ship text-[#FF6500] text-lg md:text-xl icon-float"></i>
+                        <span class="text-xs md:text-sm text-slate-300">Optimización de carga</span>
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-lg border border-white/5 hover:bg-white/10 transition">
+                        <i class="fa-solid fa-route text-[#FF6500] text-lg md:text-xl icon-slide"></i>
+                        <span class="text-xs md:text-sm text-slate-300">Logística de traslado</span>
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-lg border border-white/5 hover:bg-white/10 transition">
+                        <i class="fa-solid fa-users text-[#FF6500] text-lg md:text-xl icon-bounce"></i>
+                        <span class="text-xs md:text-sm text-slate-300">Gestión de RRHH</span>
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-lg border border-white/5 hover:bg-white/10 transition">
+                        <i class="fa-solid fa-file-invoice-dollar text-[#FF6500] text-lg md:text-xl icon-glow"></i>
+                        <span class="text-xs md:text-sm text-slate-300">Facturación y contabilidad</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 4 — SPECIFIC OBJECTIVES
+        ========================================================== -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Objetivos Específicos</span>
+                <ul class="objective-list fade-in delay-1">
+                    <li>
+                        <i class="fa-solid fa-lock icon-float"></i>
+                        <span><strong class="text-white">Roles y Seguridad</strong><br class="hidden sm:block">Gestión de accesos para 7 perfiles</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-weight-scale icon-pulse"></i>
+                        <span><strong class="text-white">Núcleo Operativo</strong><br class="hidden sm:block">Cálculo automático de balanzadas</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-people-group icon-bounce"></i>
+                        <span><strong class="text-white">RRHH y Seguridad</strong><br class="hidden sm:block">Control de asistencia, EPIs y amonestaciones</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-file-invoice icon-glow"></i>
+                        <span><strong class="text-white">Facturación y Finanzas</strong><br class="hidden sm:block">Facturas, recibos, libro diario</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-chart-simple icon-slide"></i>
+                        <span><strong class="text-white">Panel de Cliente</strong><br class="hidden sm:block">Monitoreo en tiempo real</span>
+                    </li>
+                </ul>
+                <div class="mt-3 md:mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 fade-in delay-2">
+                    <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2 md:p-3 text-center hover:bg-[#FF6500]/20 transition">
+                        <div class="text-xl md:text-2xl font-bold text-[#FF6500]">7</div>
+                        <div class="text-[10px] md:text-xs text-slate-400">Roles</div>
+                    </div>
+                    <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2 md:p-3 text-center hover:bg-[#FF6500]/20 transition">
+                        <div class="text-xl md:text-2xl font-bold text-[#FF6500]">4</div>
+                        <div class="text-[10px] md:text-xs text-slate-400">Módulos</div>
+                    </div>
+                    <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2 md:p-3 text-center hover:bg-[#FF6500]/20 transition">
+                        <div class="text-xl md:text-2xl font-bold text-[#FF6500]">100%</div>
+                        <div class="text-[10px] md:text-xs text-slate-400">Trazabilidad</div>
+                    </div>
+                    <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2 md:p-3 text-center hover:bg-[#FF6500]/20 transition">
+                        <div class="text-xl md:text-2xl font-bold text-[#FF6500]">Real</div>
+                        <div class="text-[10px] md:text-xs text-slate-400">Caso de Estudio</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 5 — ARCHITECTURE
+        ========================================================== -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Arquitectura del Sistema</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 flex-1 items-center fade-in delay-1">
+                    <div>
+                        <h3 class="text-lg md:text-xl font-bold text-white font-['Barlow']">Modelo <span class="text-[#FF6500]">MVC</span> con Laravel</h3>
+                        <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-xs md:text-sm text-slate-300">
+                            <li class="flex items-start gap-2 md:gap-3 hover:text-white transition">
+                                <i class="fa-solid fa-database text-[#FF6500] mt-0.5 icon-float"></i>
+                                <span><strong class="text-white">Modelo:</strong> ORM Eloquent, migraciones</span>
+                            </li>
+                            <li class="flex items-start gap-2 md:gap-3 hover:text-white transition">
+                                <i class="fa-solid fa-eye text-[#FF6500] mt-0.5 icon-pulse"></i>
+                                <span><strong class="text-white">Vista:</strong> Blade, responsive</span>
+                            </li>
+                            <li class="flex items-start gap-2 md:gap-3 hover:text-white transition">
+                                <i class="fa-solid fa-sliders text-[#FF6500] mt-0.5 icon-slide"></i>
+                                <span><strong class="text-white">Controlador:</strong> Enrutamiento, middleware</span>
+                            </li>
+                            <li class="flex items-start gap-2 md:gap-3 hover:text-white transition">
+                                <i class="fa-solid fa-shield text-[#FF6500] mt-0.5 icon-glow"></i>
+                                <span><strong class="text-white">Seguridad:</strong> Roles, permisos, logs</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6">
+                        <div class="grid grid-cols-2 gap-2 md:gap-3">
+                            <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2.5 md:p-4 text-center hover:bg-[#FF6500]/20 transition">
+                                <i class="fa-solid fa-ship text-xl md:text-2xl text-[#FF6500] icon-float"></i>
+                                <p class="text-[10px] md:text-xs text-slate-400 mt-0.5">Logística<br>de Barcazas</p>
+                            </div>
+                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-2.5 md:p-4 text-center hover:bg-blue-500/20 transition">
+                                <i class="fa-solid fa-users text-xl md:text-2xl text-blue-400 icon-bounce"></i>
+                                <p class="text-[10px] md:text-xs text-slate-400 mt-0.5">RRHH &<br>Seguridad</p>
+                            </div>
+                            <div class="bg-green-500/10 border border-green-500/20 rounded-lg p-2.5 md:p-4 text-center hover:bg-green-500/20 transition">
+                                <i class="fa-solid fa-file-invoice text-xl md:text-2xl text-green-400 icon-pulse"></i>
+                                <p class="text-[10px] md:text-xs text-slate-400 mt-0.5">Facturación<br>& Finanzas</p>
+                            </div>
+                            <div class="bg-purple-500/10 border border-purple-500/20 rounded-lg p-2.5 md:p-4 text-center hover:bg-purple-500/20 transition">
+                                <i class="fa-solid fa-chart-line text-xl md:text-2xl text-purple-400 icon-glow"></i>
+                                <p class="text-[10px] md:text-xs text-slate-400 mt-0.5">Panel<br>del Cliente</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 md:mt-4 text-center text-[10px] md:text-xs text-slate-500">
+                            <i class="fa-solid fa-arrow-right text-[#FF6500] icon-slide"></i>
+                            MySQL
+                            <i class="fa-solid fa-arrow-left text-[#FF6500] ml-2 icon-slide" style="animation-delay:0.3s;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 6 — MODULES
+        ========================================================== -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Módulos Funcionales</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 flex-1 content-center fade-in delay-1">
+                    <div class="card">
+                        <div class="icon icon-anchor"><i class="fa-solid fa-anchor"></i></div>
+                        <h4>Núcleo Operativo de Carga</h4>
+                        <p>Cálculo automático de balanzadas, distribución por bodegas y validación de calado crítico.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon icon-float"><i class="fa-solid fa-users-gear"></i></div>
+                        <h4>RRHH y Seguridad Laboral</h4>
+                        <p>Control de asistencia, gestión de EPIs con firma digital y registro de amonestaciones.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon icon-glow"><i class="fa-solid fa-receipt"></i></div>
+                        <h4>Facturación Automatizada</h4>
+                        <p>Emisión de facturas, remisiones y control de estados de cobro al cliente.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon icon-pulse"><i class="fa-solid fa-calculator"></i></div>
+                        <h4>Contabilidad y Libro Diario</h4>
+                        <p>Extractos salariales, recibos de sueldo y asientos contables automatizados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 7 — ROLES MATRIX (7 ROLES)
+        ========================================================== -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Matriz de Roles y Permisos</span>
+                <div class="role-grid fade-in delay-1">
+                    <div class="role-item">
+                        <i class="fa-solid fa-user-gear icon-spin"></i>
+                        <span class="role-name">Superusuario</span>
+                        <span class="role-desc">Auditoría, config. global</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-user-tie icon-bounce"></i>
+                        <span class="role-name">Administrador</span>
+                        <span class="role-desc">Liquidaciones, contabilidad</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-user-shield icon-pulse"></i>
+                        <span class="role-name">Supervisor</span>
+                        <span class="role-desc">Asignación, EPIs, marcas</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-truck-fast icon-slide"></i>
+                        <span class="role-name">Chofer</span>
+                        <span class="role-desc">Rutas, paradas, traslado</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-industry icon-glow"></i>
+                        <span class="role-name">Cliente</span>
+                        <span class="role-desc">Monitoreo, remisiones</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-user-astronaut icon-wiggle"></i>
+                        <span class="role-name">Cuadrilla</span>
+                        <span class="role-desc">Marcación, asignación</span>
+                    </div>
+                    <div class="role-item">
+                        <i class="fa-solid fa-user icon-float"></i>
+                        <span class="role-name">Trabajador</span>
+                        <span class="role-desc">Recepción de EPIs</span>
+                    </div>
+                </div>
+                <div class="mt-3 md:mt-4 text-center text-[10px] md:text-xs text-slate-500 fade-in delay-2">
+                    <i class="fa-solid fa-check-circle text-[#FF6500] icon-bounce"></i>
+                    Control de acceso granular por perfil
+                    <span class="mx-1 md:mx-2">•</span>
+                    <i class="fa-solid fa-clipboard-list text-[#FF6500] icon-pulse"></i>
+                    Auditoría de logs completa
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 8 — TECHNOLOGY
+        ========================================================== -->
+        <div class="slide" data-slide="7">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Tecnología Utilizada</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 flex-1 content-center fade-in delay-1">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-brands fa-php text-4xl md:text-5xl text-[#777BB4] icon-float"></i>
+                        <h4 class="text-lg md:text-xl font-bold text-white mt-2 md:mt-3 font-['Barlow']">PHP 8.x</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400">Lenguaje del lado del servidor</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-brands fa-laravel text-4xl md:text-5xl text-[#FF2D20] icon-pulse"></i>
+                        <h4 class="text-lg md:text-xl font-bold text-white mt-2 md:mt-3 font-['Barlow']">Laravel</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400">Framework MVC, ORM Eloquent</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-solid fa-database text-4xl md:text-5xl text-[#00758F] icon-glow"></i>
+                        <h4 class="text-lg md:text-xl font-bold text-white mt-2 md:mt-3 font-['Barlow']">MySQL</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400">Base de datos relacional</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 mt-3 md:mt-4 fade-in delay-2">
+                    <div class="text-center text-[10px] md:text-xs text-slate-500 bg-white/5 p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition">
+                        <i class="fa-brands fa-html5 text-[#E34F26] text-base md:text-lg icon-float"></i> HTML5
+                    </div>
+                    <div class="text-center text-[10px] md:text-xs text-slate-500 bg-white/5 p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition">
+                        <i class="fa-brands fa-css3-alt text-[#1572B6] text-base md:text-lg icon-pulse"></i> CSS3 / Tailwind
+                    </div>
+                    <div class="text-center text-[10px] md:text-xs text-slate-500 bg-white/5 p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition">
+                        <i class="fa-brands fa-js text-[#F7DF1E] text-base md:text-lg icon-slide"></i> JavaScript
+                    </div>
+                    <div class="text-center text-[10px] md:text-xs text-slate-500 bg-white/5 p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition">
+                        <i class="fa-brands fa-git-alt text-[#F05032] text-base md:text-lg icon-bounce"></i> Git
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 9 — JUSTIFICATION
+        ========================================================== -->
+        <div class="slide" data-slide="8">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Justificación</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 flex-1 content-center fade-in delay-1">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-solid fa-gear text-2xl md:text-3xl text-[#FF6500] icon-spin"></i>
+                        <h4 class="font-bold text-white mt-2 md:mt-3 font-['Barlow'] text-sm md:text-base">Operativa</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400 mt-0.5 md:mt-1">Automatización del cálculo de calado y distribución de peso.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-solid fa-file-invoice-dollar text-2xl md:text-3xl text-[#FF6500] icon-float"></i>
+                        <h4 class="font-bold text-white mt-2 md:mt-3 font-['Barlow'] text-sm md:text-base">Administrativa</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400 mt-0.5 md:mt-1">Integración de facturación, recibos, extractos y libro diario.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
+                        <i class="fa-solid fa-hard-hat text-2xl md:text-3xl text-[#FF6500] icon-pulse"></i>
+                        <h4 class="font-bold text-white mt-2 md:mt-3 font-['Barlow'] text-sm md:text-base">Seguridad Laboral</h4>
+                        <p class="text-[10px] md:text-sm text-slate-400 mt-0.5 md:mt-1">Gestión de EPIs con registro de entrega y firma digital.</p>
+                    </div>
+                </div>
+                <div class="mt-2 md:mt-4 text-center text-[11px] md:text-sm text-slate-400 fade-in delay-2">
+                    <i class="fa-solid fa-building text-[#FF6500] mr-2 icon-bounce"></i>
+                    Caso real: HO Estibajes y Marítimos S.R.L. — Londrina S.A.
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 10 — SCOPE
+        ========================================================== -->
+        <div class="slide" data-slide="9">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Alcance y Limitaciones</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 flex-1 content-center fade-in delay-1">
+                    <div>
+                        <h4 class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow']"><i class="fa-solid fa-check-circle mr-2 icon-float"></i>Alcance</h4>
+                        <ul class="mt-2 md:mt-3 space-y-1.5 md:space-y-2 text-xs md:text-sm text-slate-300">
+                            <li class="flex items-start gap-2 hover:text-white transition"><i class="fa-solid fa-circle-check text-[#FF6500] mt-0.5 icon-pulse"></i>4 módulos funcionales completos</li>
+                            <li class="flex items-start gap-2 hover:text-white transition"><i class="fa-solid fa-circle-check text-[#FF6500] mt-0.5 icon-pulse" style="animation-delay:0.2s;"></i>7 roles diferenciados con auditoría</li>
+                            <li class="flex items-start gap-2 hover:text-white transition"><i class="fa-solid fa-circle-check text-[#FF6500] mt-0.5 icon-pulse" style="animation-delay:0.4s;"></i>Optimización de carga de barcazas graneleras</li>
+                            <li class="flex items-start gap-2 hover:text-white transition"><i class="fa-solid fa-circle-check text-[#FF6500] mt-0.5 icon-pulse" style="animation-delay:0.6s;"></i>Gestión de RRHH, EPIs y seguridad</li>
+                            <li class="flex items-start gap-2 hover:text-white transition"><i class="fa-solid fa-circle-check text-[#FF6500] mt-0.5 icon-pulse" style="animation-delay:0.8s;"></i>Facturación, contabilidad y libro diario</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-base md:text-lg font-bold text-slate-400 font-['Barlow']"><i class="fa-solid fa-ban mr-2 icon-wiggle"></i>Limitaciones</h4>
+                        <ul class="mt-2 md:mt-3 space-y-1.5 md:space-y-2 text-xs md:text-sm text-slate-500">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-slate-600 mt-0.5"></i>No incluye automatización robótica de maquinaria</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-slate-600 mt-0.5"></i>Sin GPS satelital en tiempo real</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-slate-600 mt-0.5"></i>Sin integración con DNIT o agencias navieras</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-slate-600 mt-0.5"></i>Aplicado específicamente a barcazas graneleras</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 11 — TIMELINE
+        ========================================================== -->
+        <div class="slide" data-slide="10">
+            <div class="slide-content">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Cronograma 2026</span>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 md:gap-3 flex-1 content-center fade-in delay-1">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-2.5 md:p-4 text-center hover:bg-white/10 transition">
+                        <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-float">Feb</div>
+                        <div class="text-[9px] md:text-xs text-slate-400 mt-0.5">Elección y validación</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-2.5 md:p-4 text-center hover:bg-white/10 transition">
+                        <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-pulse" style="animation-delay:0.2s;">Mar</div>
+                        <div class="text-[9px] md:text-xs text-slate-400 mt-0.5">Estado del arte, objetivos</div>
+                    </div>
+                    <div class="bg-[#FF6500]/20 border border-[#FF6500]/30 rounded-xl p-2.5 md:p-4 text-center hover:bg-[#FF6500]/30 transition">
+                        <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-bounce">Abr</div>
+                        <div class="text-[9px] md:text-xs text-slate-300 mt-0.5"><strong>Parcial 1</strong><br>Anteproyecto</div>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-2.5 md:p-4 text-center hover:bg-white/10 transition">
+                        <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-slide" style="animation-delay:0.6s;">May</div>
+                        <div class="text-[9px] md:text-xs text-slate-400 mt-0.5">Desarrollo de módulos</div>
+                    </div>
+                    <div class="bg-[#FF6500]/20 border border-[#FF6500]/30 rounded-xl p-2.5 md:p-4 text-center hover:bg-[#FF6500]/30 transition">
+                        <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-glow">Jun</div>
+                        <div class="text-[9px] md:text-xs text-slate-300 mt-0.5"><strong>Parcial 2</strong><br>Documentación</div>
+                    </div>
+                </div>
+                <div class="mt-2 md:mt-4 text-center text-[10px] md:text-sm text-slate-400 fade-in delay-2">
+                    <i class="fa-regular fa-calendar-check text-[#FF6500] mr-1 md:mr-2 icon-bounce"></i>
+                    Tutorías: viernes 09:00–11:00
+                    <span class="mx-1 md:mx-2">•</span>
+                    <i class="fa-regular fa-flag text-[#FF6500] mr-1 md:mr-2 icon-float"></i>
+                    Entrega final: 26 de junio
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        SLIDE 12 — THANK YOU
+        ========================================================== -->
+        <div class="slide" data-slide="11">
+            <div class="slide-content text-center">
+                <div class="fade-in">
+                    <div class="logo-container justify-center mb-3">
+                        <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
+                    </div>
+                    <i class="fa-solid fa-anchor text-4xl md:text-5xl text-[#FF6500] icon-anchor"></i>
+                    <h1 class="slide-title text-3xl md:text-5xl mt-1">
+                        ¿Preguntas?<br>
+                        <span class="highlight">Bracho Port System</span>
+                    </h1>
+                    <p class="text-base md:text-xl text-slate-300 mt-2 md:mt-4 font-light">
+                        Sistema de Gestión Integral para Empresas de Estibaje
+                    </p>
+                    <div class="mt-4 md:mt-6 flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-base text-slate-400">
+                        <span class="hover:text-white transition"><i class="fa-regular fa-envelope text-[#FF6500] mr-2 icon-float"></i>rodrigo_bracho@fpuna.edu.py</span>
+                        <span class="hover:text-white transition"><i class="fa-brands fa-whatsapp text-[#FF6500] mr-2 icon-pulse"></i>+595 972 424632</span>
+                    </div>
+                    <div class="mt-5 md:mt-8 flex flex-wrap justify-center gap-2 md:gap-4">
+                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-full text-[10px] md:text-xs font-bold text-[#FF6500] icon-glow">Tesis FP-UNA 2026</span>
+                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-xs font-bold text-slate-300 icon-float">#LogísticaPortuaria</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    OCEAN WITH SHIPS
+    ============================================================ -->
+    <div class="ocean-container">
+        <div class="ocean-bg"></div>
+        
+        <svg class="waves-svg" viewBox="0 0 1440 35" preserveAspectRatio="none">
+            <path d="M0,18 C360,28 720,8 1080,18 L1440,18 L1440,35 L0,35 Z" fill="rgba(255,255,255,0.035)"/>
+        </svg>
+        <svg class="waves-svg" viewBox="0 0 1440 35" preserveAspectRatio="none">
+            <path d="M0,22 C360,14 720,30 1080,22 L1440,22 L1440,35 L0,35 Z" fill="rgba(255,255,255,0.02)"/>
+        </svg>
+        <svg class="waves-svg" viewBox="0 0 1440 35" preserveAspectRatio="none">
+            <path d="M0,26 C360,20 720,32 1080,26 L1440,26 L1440,35 L0,35 Z" fill="rgba(255,255,255,0.015)"/>
+        </svg>
+        
+        <div class="ship-container">
+            <div class="ship-1">
+                <svg viewBox="0 0 80 30" fill="none" class="ship-bob">
+                    <path d="M6 20 L18 20 L23 13 L52 13 L57 20 L68 20 L62 26 L12 26 Z" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.05)" stroke-width="0.6"/>
+                    <rect x="32" y="8" width="14" height="6" rx="0.7" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.03)" stroke-width="0.4"/>
+                    <line x1="12" y1="21" x2="64" y2="21" stroke="rgba(255,101,0,0.08)" stroke-width="0.7" stroke-linecap="round"/>
+                    <circle cx="37" cy="11" r="1" fill="rgba(255,101,0,0.06)"/>
+                    <circle cx="42" cy="11" r="1" fill="rgba(255,101,0,0.06)"/>
+                </svg>
+            </div>
+
+            <div class="ship-2">
+                <svg viewBox="0 0 60 22" fill="none" class="ship-bob" style="animation-delay: 0.5s;">
+                    <path d="M4 15 L12 15 L15 9 L38 9 L41 15 L50 15 L46 19 L8 19 Z" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                    <rect x="24" y="5" width="10" height="5" rx="0.5" fill="rgba(255,255,255,0.035)"/>
+                    <line x1="8" y1="16" x2="46" y2="16" stroke="rgba(255,101,0,0.06)" stroke-width="0.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="ship-3">
+                <svg viewBox="0 0 44 15" fill="none" class="ship-bob" style="animation-delay: 1s;">
+                    <path d="M3 10 L9 10 L11 6 L28 6 L30 10 L36 10 L32 13 L7 13 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.03)" stroke-width="0.4"/>
+                    <rect x="18" y="4" width="6" height="3" rx="0.4" fill="rgba(255,255,255,0.025)"/>
+                    <line x1="5" y1="11" x2="33" y2="11" stroke="rgba(255,101,0,0.04)" stroke-width="0.4" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    KEYBOARD HINT
+    ============================================================ -->
+    <div class="keyboard-hint" id="keyboardHint">
+        <kbd>←</kbd> <span>o</span> <kbd>→</kbd> <span>para navegar</span>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+
+            // Auto-hide keyboard hint after 5 seconds
+            setTimeout(function() {
+                const hint = document.getElementById('keyboardHint');
+                if (hint) {
+                    hint.classList.add('fade-out');
+                    setTimeout(function() {
+                        hint.style.display = 'none';
+                    }, 1500);
+                }
+            }, 5000);
+
+            function goToSlide(index) {
+                if (index < 0) index = 0;
+                if (index >= totalSlides) index = totalSlides - 1;
+                slides.forEach(s => s.classList.remove('active'));
+                slides[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                if (currentSlide > 0) goToSlide(currentSlide - 1);
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    prevSlide();
+                }
+            });
+
+            // Touch support
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                const diffX = touchStartX - e.changedTouches[0].screenX;
+                const diffY = touchStartY - e.changedTouches[0].screenY;
+                
+                // Solo si el deslizamiento es más horizontal que vertical
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+                    diffX > 0 ? nextSlide() : prevSlide();
+                }
+            });
+
+            // Mouse wheel
+            let wheelTimeout = false;
+            document.addEventListener('wheel', function(e) {
+                if (wheelTimeout) return;
+                wheelTimeout = true;
+                setTimeout(() => { wheelTimeout = false; }, 700);
+                e.deltaY > 0 ? nextSlide() : prevSlide();
+            }, { passive: true });
+        });
+    </script>
+
+</body>
+</html>
