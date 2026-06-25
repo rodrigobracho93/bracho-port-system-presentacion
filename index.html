@@ -51,27 +51,55 @@
             padding: 2rem 2rem 4rem 2rem;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0.8s ease;
             background: linear-gradient(135deg, #0B192C 0%, #1E3E62 50%, #0B192C 100%);
             color: white;
-        }
-
-        /* Safe area support - SOLO PARA MÓVILES */
-        @supports (padding: max(0px)) {
-            @media (max-width: 768px) {
-                .slide {
-                    padding-left: max(1.5rem, env(safe-area-inset-left));
-                    padding-right: max(1.5rem, env(safe-area-inset-right));
-                    padding-bottom: max(3.5rem, env(safe-area-inset-bottom));
-                    padding-top: max(1.5rem, env(safe-area-inset-top));
-                }
-            }
+            transform: scale(0.95);
+            will-change: transform, opacity;
         }
 
         .slide.active {
             opacity: 1;
             visibility: visible;
             z-index: 10;
+            transform: scale(1);
+        }
+
+        /* Efecto de entrada para cada slide */
+        .slide.active .slide-content > * {
+            animation: slideIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .slide.active .slide-content > *:nth-child(1) { animation-delay: 0.05s; }
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.12s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.19s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.26s; }
+        .slide.active .slide-content > *:nth-child(5) { animation-delay: 0.33s; }
+        .slide.active .slide-content > *:nth-child(6) { animation-delay: 0.40s; }
+        .slide.active .slide-content > *:nth-child(7) { animation-delay: 0.47s; }
+        .slide.active .slide-content > *:nth-child(8) { animation-delay: 0.54s; }
+        .slide.active .slide-content > *:nth-child(9) { animation-delay: 0.61s; }
+        .slide.active .slide-content > *:nth-child(10) { animation-delay: 0.68s; }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Efecto de salida para slides anteriores */
+        .slide:not(.active) {
+            transform: scale(0.92);
+            opacity: 0;
         }
 
         .slide-content {
@@ -82,31 +110,28 @@
             flex-direction: column;
             justify-content: center;
             gap: 1.2rem;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
         }
 
-        .slide-content::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* ========== SLIDE TYPES ========== */
+        /* ========== SLIDE TYPES - TÍTULOS MÁS GRANDES EN PC ========== */
         .slide-title {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 3.8rem;
+            font-size: 5rem; /* Aumentado de 3.8rem a 5rem */
             text-transform: uppercase;
             letter-spacing: -0.02em;
-            line-height: 1.1;
+            line-height: 1.05;
         }
 
         .slide-title .highlight {
             color: #FF6500;
+            background: linear-gradient(135deg, #FF6500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .slide-subtitle {
-            font-size: 1.4rem;
+            font-size: 1.6rem; /* Aumentado de 1.4rem a 1.6rem */
             color: #94A3B8;
             font-weight: 400;
             max-width: 700px;
@@ -188,7 +213,7 @@
 
         /* ========== LOGO ========== */
         .logo-institucional {
-            height: 60px;
+            height: 70px; /* Aumentado de 60px a 70px */
             width: auto;
             opacity: 0.95;
             transition: opacity 0.3s ease;
@@ -203,15 +228,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.2rem;
             flex-wrap: wrap;
         }
 
         /* ========== GRID CARDS ========== */
         .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
             margin-top: 0.5rem;
         }
 
@@ -220,77 +245,81 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 1rem;
-            padding: 1.5rem 1.5rem;
-            transition: all 0.3s ease;
+            padding: 1.8rem 1.8rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
         }
 
         .card:hover {
             background: rgba(255, 101, 0, 0.1);
             border-color: #FF6500;
-            transform: translateY(-4px);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255, 101, 0, 0.15);
         }
 
         .card .icon {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: #FF6500;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
             display: inline-block;
         }
 
         .card h4 {
             font-weight: 700;
-            font-size: 1.05rem;
-            margin-bottom: 0.4rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
             font-family: 'Barlow', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.02em;
         }
 
         .card p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #94A3B8;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* ========== TWO COLUMN ========== */
         .two-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
+            gap: 3rem;
             align-items: center;
         }
 
         .col-left h2 {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 2.8rem;
+            font-size: 3.2rem; /* Aumentado de 2.8rem a 3.2rem */
             text-transform: uppercase;
-            line-height: 1.2;
+            line-height: 1.15;
         }
 
         .col-left p {
             color: #94A3B8;
-            font-size: 1.15rem;
-            line-height: 1.7;
+            font-size: 1.25rem;
+            line-height: 1.8;
             margin-top: 0.75rem;
         }
 
         .col-right .highlight-box {
             background: rgba(255, 101, 0, 0.08);
             border-left: 4px solid #FF6500;
-            padding: 1.2rem 1.5rem;
+            padding: 1.4rem 1.8rem;
             border-radius: 0.5rem;
             margin-bottom: 0.8rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .col-right .highlight-box:hover {
             background: rgba(255, 101, 0, 0.14);
+            transform: translateX(6px);
+            box-shadow: 0 4px 20px rgba(255, 101, 0, 0.1);
         }
 
         .col-right .highlight-box p {
             color: #CBD5E1;
-            font-size: 1rem;
+            font-size: 1.05rem;
             line-height: 1.6;
         }
 
@@ -302,41 +331,42 @@
         .role-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.7rem;
+            gap: 0.8rem;
             margin-top: 0.3rem;
         }
 
         .role-item {
             display: flex;
             align-items: center;
-            gap: 0.7rem;
+            gap: 0.8rem;
             background: rgba(255, 255, 255, 0.04);
-            padding: 0.7rem 0.9rem;
+            padding: 0.8rem 1rem;
             border-radius: 0.5rem;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .role-item:hover {
             background: rgba(255, 101, 0, 0.08);
             border-color: rgba(255, 101, 0, 0.2);
+            transform: translateX(4px);
         }
 
         .role-item i {
             color: #FF6500;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             width: 1.5rem;
             flex-shrink: 0;
         }
 
         .role-item .role-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             min-width: 85px;
         }
 
         .role-item .role-desc {
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             color: #94A3B8;
         }
 
@@ -344,7 +374,7 @@
         .objective-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.6rem 2rem;
+            gap: 0.8rem 2.5rem;
             margin-top: 0.3rem;
         }
 
@@ -352,27 +382,28 @@
             list-style: none;
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            font-size: 1rem;
+            gap: 0.8rem;
+            font-size: 1.05rem;
             color: #CBD5E1;
-            line-height: 1.5;
-            padding: 0.3rem 0.6rem;
+            line-height: 1.6;
+            padding: 0.4rem 0.8rem;
             border-radius: 0.4rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .objective-list li:hover {
             background: rgba(255, 101, 0, 0.06);
+            transform: translateX(4px);
         }
 
         .objective-list li i {
             color: #FF6500;
             margin-top: 0.15rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .objective-list li strong {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
         /* ========== SHIPS & OCEAN ========== */
@@ -501,14 +532,14 @@
             100% { transform: translateY(-2.5px) rotate(0.4deg); }
         }
 
-        /* ========== INDICATOR - SOLO MÓVILES ========== */
+        /* ========== INDICATOR ========== */
         .slide-indicator {
             display: none;
             position: fixed;
             bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
-            gap: 0.4rem;
+            gap: 0.5rem;
             z-index: 100;
             padding: 0.25rem 0.6rem;
             background: rgba(0,0,0,0.3);
@@ -531,9 +562,10 @@
             background: #FF6500;
             width: 20px;
             border-radius: 4px;
+            box-shadow: 0 0 20px rgba(255, 101, 0, 0.3);
         }
 
-        /* ========== SWIPE HINT - SOLO MÓVILES ========== */
+        /* ========== SWIPE HINT ========== */
         .swipe-hint {
             display: none;
             position: fixed;
@@ -606,174 +638,90 @@
            RESPONSIVE - SOLO MÓVILES
            ========================================================== */
         
-        /* Tablets y pantallas medianas */
+        /* Tablets */
         @media (max-width: 992px) {
+            .slide-title {
+                font-size: 3.5rem;
+            }
             .role-grid {
                 grid-template-columns: 1fr 1fr;
-            }
-            .slide-title {
-                font-size: 3rem;
             }
             .two-col {
                 gap: 2rem;
             }
             .col-left h2 {
-                font-size: 2.3rem;
+                font-size: 2.6rem;
+            }
+            .logo-institucional {
+                height: 55px;
             }
         }
 
         /* Móviles grandes y tablets pequeñas */
         @media (max-width: 768px) {
             .slide {
-                padding: 1.5rem 1.5rem 4rem 1.5rem;
+                padding: 1.2rem 1.2rem 3.8rem 1.2rem;
             }
             .slide-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             .slide-subtitle {
-                font-size: 1.1rem;
-            }
-            .two-col {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            .col-left h2 {
-                font-size: 2rem;
-            }
-            .col-left p {
                 font-size: 1rem;
             }
-            .col-right .highlight-box p {
-                font-size: 0.92rem;
-            }
-            .role-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .role-item .role-name {
-                font-size: 0.82rem;
-                min-width: 70px;
-            }
-            .role-item .role-desc {
-                font-size: 0.7rem;
-            }
-            .objective-list {
-                grid-template-columns: 1fr;
-                gap: 0.4rem;
-            }
-            .objective-list li {
-                font-size: 0.92rem;
-                padding: 0.2rem 0.4rem;
-            }
-            .objective-list li strong {
-                font-size: 0.95rem;
-            }
-            .grid-cards {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.8rem;
-            }
-            .card {
-                padding: 1.2rem 1rem;
-            }
-            .card .icon {
-                font-size: 1.8rem;
-            }
-            .card h4 {
-                font-size: 0.9rem;
-            }
-            .card p {
-                font-size: 0.82rem;
-            }
-            .logo-institucional {
-                height: 45px;
-            }
-            .logo-container {
-                gap: 0.6rem;
-            }
-            .logo-container span {
-                font-size: 0.7rem;
-            }
-            .ship-1 svg { width: 38px; height: 18px; }
-            .ship-2 svg { width: 30px; height: 14px; }
-            .ship-3 svg { width: 24px; height: 10px; }
-            .ocean-container { height: 50px; }
-            .ship-container { bottom: 6px; height: 22px; }
-            .keyboard-hint {
-                font-size: 0.6rem;
-                padding: 0.2rem 0.8rem;
-                bottom: 4.2rem;
-            }
-            
-            /* Mostrar indicador y swipe hint solo en móviles */
-            .slide-indicator {
-                display: flex;
-                bottom: 1.2rem;
-            }
-            .swipe-hint {
-                display: flex;
-                bottom: 4rem;
-            }
-        }
-
-        /* Móviles pequeños */
-        @media (max-width: 480px) {
-            .slide {
-                padding: 1rem 1rem 3.5rem 1rem;
-            }
-            .slide-title {
-                font-size: 1.8rem;
-            }
-            .slide-subtitle {
-                font-size: 0.95rem;
-            }
             .two-col {
-                gap: 0.8rem;
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
             .col-left h2 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             .col-left p {
-                font-size: 0.88rem;
-                margin-top: 0.4rem;
+                font-size: 0.92rem;
+                margin-top: 0.3rem;
             }
             .col-right .highlight-box {
                 padding: 0.8rem 1rem;
                 margin-bottom: 0.5rem;
             }
             .col-right .highlight-box p {
-                font-size: 0.82rem;
+                font-size: 0.85rem;
             }
             .role-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 0.4rem;
             }
             .role-item {
-                padding: 0.5rem 0.7rem;
+                padding: 0.4rem 0.6rem;
+                gap: 0.5rem;
             }
             .role-item i {
                 font-size: 0.9rem;
                 width: 1.2rem;
             }
             .role-item .role-name {
-                font-size: 0.78rem;
-                min-width: 65px;
+                font-size: 0.75rem;
+                min-width: 60px;
             }
             .role-item .role-desc {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
+            }
+            .objective-list {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
             }
             .objective-list li {
-                font-size: 0.82rem;
+                font-size: 0.85rem;
                 padding: 0.15rem 0.3rem;
                 gap: 0.5rem;
             }
             .objective-list li strong {
-                font-size: 0.85rem;
+                font-size: 0.88rem;
             }
             .objective-list li i {
                 font-size: 0.8rem;
-                margin-top: 0.1rem;
             }
             .grid-cards {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 0.6rem;
             }
             .card {
@@ -787,99 +735,118 @@
                 font-size: 0.8rem;
             }
             .card p {
-                font-size: 0.75rem;
+                font-size: 0.72rem;
             }
             .logo-institucional {
-                height: 35px;
+                height: 40px;
             }
             .logo-container {
-                gap: 0.4rem;
+                gap: 0.5rem;
             }
             .logo-container span {
-                font-size: 0.6rem;
+                font-size: 0.65rem;
             }
-            .ocean-container { height: 40px; }
+            .ship-1 svg { width: 35px; height: 16px; }
+            .ship-2 svg { width: 28px; height: 12px; }
+            .ship-3 svg { width: 20px; height: 9px; }
+            .ocean-container { height: 45px; }
             .ship-container { bottom: 5px; height: 18px; }
-            .ship-1 svg { width: 28px; height: 14px; }
-            .ship-2 svg { width: 22px; height: 10px; }
-            .ship-3 svg { width: 18px; height: 8px; }
-            .keyboard-hint { display: none; }
-            .waves-svg { height: 20px; }
-            .waves-svg:nth-child(2) { height: 16px; }
-            .waves-svg:nth-child(3) { height: 12px; }
-            
+            .keyboard-hint {
+                font-size: 0.55rem;
+                padding: 0.15rem 0.6rem;
+                bottom: 3.8rem;
+            }
             .slide-indicator {
                 display: flex;
-                bottom: 0.8rem;
+                bottom: 0.9rem;
                 gap: 0.3rem;
-                padding: 0.2rem 0.5rem;
+                padding: 0.15rem 0.4rem;
             }
             .slide-indicator .dot {
                 width: 6px;
                 height: 6px;
             }
             .slide-indicator .dot.active {
-                width: 15px;
+                width: 14px;
             }
             .swipe-hint {
                 display: flex;
                 bottom: 3.5rem;
-                font-size: 0.6rem;
+                font-size: 0.55rem;
                 gap: 0.3rem;
             }
+            .slide-content {
+                gap: 0.8rem;
+            }
         }
 
-        /* Móviles muy pequeños */
-        @media (max-width: 360px) {
-            .slide-title {
-                font-size: 1.4rem;
-            }
+        /* Móviles pequeños */
+        @media (max-width: 480px) {
             .slide {
-                padding: 0.8rem 0.8rem 3rem 0.8rem;
-            }
-            .col-left h2 {
-                font-size: 1.2rem;
-            }
-            .col-left p {
-                font-size: 0.78rem;
-            }
-            .role-item .role-name {
-                font-size: 0.7rem;
-                min-width: 55px;
-            }
-            .role-item .role-desc {
-                font-size: 0.6rem;
-            }
-            .card h4 {
-                font-size: 0.7rem;
-            }
-            .card p {
-                font-size: 0.68rem;
-            }
-            .logo-institucional {
-                height: 28px;
-            }
-            .ocean-container { height: 35px; }
-            .ship-container { bottom: 4px; height: 14px; }
-            .ship-1 svg { width: 22px; height: 10px; }
-            .ship-2 svg { width: 18px; height: 8px; }
-            .ship-3 svg { width: 14px; height: 6px; }
-        }
-
-        /* Landscape en móviles */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .slide {
-                padding: 0.5rem 2rem 3rem 2rem;
+                padding: 0.8rem 0.8rem 3.2rem 0.8rem;
             }
             .slide-title {
                 font-size: 1.6rem;
             }
-            .slide-content {
-                gap: 0.5rem;
-                justify-content: center;
+            .slide-subtitle {
+                font-size: 0.85rem;
+            }
+            .two-col {
+                gap: 0.6rem;
+            }
+            .col-left h2 {
+                font-size: 1.3rem;
+            }
+            .col-left p {
+                font-size: 0.78rem;
+                margin-top: 0.2rem;
+            }
+            .col-right .highlight-box {
+                padding: 0.5rem 0.7rem;
+                margin-bottom: 0.35rem;
+                border-left-width: 3px;
+            }
+            .col-right .highlight-box p {
+                font-size: 0.72rem;
+            }
+            .role-grid {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+            .role-item {
+                padding: 0.3rem 0.5rem;
+                gap: 0.4rem;
+            }
+            .role-item i {
+                font-size: 0.8rem;
+                width: 1rem;
+            }
+            .role-item .role-name {
+                font-size: 0.68rem;
+                min-width: 55px;
+            }
+            .role-item .role-desc {
+                font-size: 0.55rem;
+            }
+            .objective-list li {
+                font-size: 0.72rem;
+                padding: 0.1rem 0.2rem;
+                gap: 0.4rem;
+            }
+            .objective-list li strong {
+                font-size: 0.75rem;
+            }
+            .objective-list li i {
+                font-size: 0.7rem;
+                margin-top: 0.1rem;
+            }
+            .grid-cards {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
             }
             .card {
-                padding: 0.6rem 0.8rem;
+                padding: 0.6rem 0.6rem;
+                border-radius: 0.7rem;
             }
             .card .icon {
                 font-size: 1.2rem;
@@ -889,52 +856,213 @@
                 font-size: 0.7rem;
             }
             .card p {
-                font-size: 0.65rem;
+                font-size: 0.62rem;
             }
-            .col-left h2 {
-                font-size: 1.4rem;
+            .logo-institucional {
+                height: 30px;
             }
-            .col-left p {
-                font-size: 0.75rem;
-                margin-top: 0.2rem;
+            .logo-container {
+                gap: 0.35rem;
             }
-            .col-right .highlight-box {
-                padding: 0.4rem 0.8rem;
-                margin-bottom: 0.3rem;
-            }
-            .col-right .highlight-box p {
-                font-size: 0.7rem;
-            }
-            .role-item {
-                padding: 0.3rem 0.5rem;
-            }
-            .role-item .role-name {
-                font-size: 0.65rem;
-                min-width: 50px;
-            }
-            .role-item .role-desc {
+            .logo-container span {
                 font-size: 0.55rem;
             }
-            .objective-list li {
-                font-size: 0.7rem;
-                padding: 0.1rem 0.2rem;
-            }
-            .grid-cards {
-                gap: 0.4rem;
-            }
             .ocean-container { height: 35px; }
-            .ship-container { bottom: 4px; height: 16px; }
-            .ship-1 svg { width: 30px; height: 14px; }
-            .ship-2 svg { width: 24px; height: 10px; }
-            .ship-3 svg { width: 18px; height: 8px; }
+            .ship-container { bottom: 4px; height: 14px; }
+            .ship-1 svg { width: 24px; height: 11px; }
+            .ship-2 svg { width: 18px; height: 8px; }
+            .ship-3 svg { width: 14px; height: 6px; }
+            .keyboard-hint { display: none; }
+            .waves-svg { height: 16px; }
+            .waves-svg:nth-child(2) { height: 12px; }
+            .waves-svg:nth-child(3) { height: 8px; }
             .slide-indicator {
                 display: flex;
                 bottom: 0.6rem;
+                gap: 0.25rem;
+                padding: 0.1rem 0.35rem;
+            }
+            .slide-indicator .dot {
+                width: 5px;
+                height: 5px;
+            }
+            .slide-indicator .dot.active {
+                width: 12px;
             }
             .swipe-hint {
                 display: flex;
-                bottom: 2.5rem;
+                bottom: 3rem;
                 font-size: 0.5rem;
+                gap: 0.2rem;
+            }
+            .slide-content {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Móviles muy pequeños */
+        @media (max-width: 380px) {
+            .slide {
+                padding: 0.5rem 0.5rem 2.8rem 0.5rem;
+            }
+            .slide-title {
+                font-size: 1.3rem;
+            }
+            .slide-subtitle {
+                font-size: 0.75rem;
+            }
+            .col-left h2 {
+                font-size: 1.1rem;
+            }
+            .col-left p {
+                font-size: 0.7rem;
+            }
+            .col-right .highlight-box {
+                padding: 0.4rem 0.5rem;
+                margin-bottom: 0.25rem;
+            }
+            .col-right .highlight-box p {
+                font-size: 0.65rem;
+            }
+            .role-item {
+                padding: 0.2rem 0.4rem;
+            }
+            .role-item .role-name {
+                font-size: 0.6rem;
+                min-width: 45px;
+            }
+            .role-item .role-desc {
+                font-size: 0.5rem;
+            }
+            .objective-list li {
+                font-size: 0.65rem;
+                gap: 0.3rem;
+            }
+            .objective-list li strong {
+                font-size: 0.68rem;
+            }
+            .card {
+                padding: 0.4rem 0.4rem;
+            }
+            .card .icon {
+                font-size: 1rem;
+            }
+            .card h4 {
+                font-size: 0.6rem;
+            }
+            .card p {
+                font-size: 0.55rem;
+            }
+            .logo-institucional {
+                height: 25px;
+            }
+            .logo-container span {
+                font-size: 0.5rem;
+            }
+            .ocean-container { height: 30px; }
+            .ship-container { bottom: 3px; height: 12px; }
+            .ship-1 svg { width: 20px; height: 9px; }
+            .ship-2 svg { width: 15px; height: 7px; }
+            .ship-3 svg { width: 12px; height: 5px; }
+            .swipe-hint {
+                font-size: 0.45rem;
+                bottom: 2.5rem;
+            }
+            .slide-indicator {
+                bottom: 0.5rem;
+                gap: 0.2rem;
+                padding: 0.1rem 0.3rem;
+            }
+            .slide-indicator .dot {
+                width: 4px;
+                height: 4px;
+            }
+            .slide-indicator .dot.active {
+                width: 10px;
+            }
+            .slide-content {
+                gap: 0.4rem;
+            }
+        }
+
+        /* Landscape en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .slide {
+                padding: 0.4rem 1.5rem 2.5rem 1.5rem;
+            }
+            .slide-title {
+                font-size: 1.3rem;
+            }
+            .slide-content {
+                gap: 0.3rem;
+                justify-content: center;
+            }
+            .card {
+                padding: 0.3rem 0.5rem;
+            }
+            .card .icon {
+                font-size: 1rem;
+                margin-bottom: 0.1rem;
+            }
+            .card h4 {
+                font-size: 0.55rem;
+            }
+            .card p {
+                font-size: 0.5rem;
+            }
+            .col-left h2 {
+                font-size: 1.1rem;
+            }
+            .col-left p {
+                font-size: 0.65rem;
+                margin-top: 0.1rem;
+            }
+            .col-right .highlight-box {
+                padding: 0.25rem 0.5rem;
+                margin-bottom: 0.2rem;
+            }
+            .col-right .highlight-box p {
+                font-size: 0.6rem;
+            }
+            .role-item {
+                padding: 0.15rem 0.4rem;
+            }
+            .role-item .role-name {
+                font-size: 0.55rem;
+                min-width: 40px;
+            }
+            .role-item .role-desc {
+                font-size: 0.45rem;
+            }
+            .objective-list li {
+                font-size: 0.6rem;
+                padding: 0.05rem 0.1rem;
+            }
+            .grid-cards {
+                gap: 0.25rem;
+            }
+            .ocean-container { height: 30px; }
+            .ship-container { bottom: 3px; height: 12px; }
+            .ship-1 svg { width: 25px; height: 11px; }
+            .ship-2 svg { width: 18px; height: 8px; }
+            .ship-3 svg { width: 14px; height: 6px; }
+            .slide-indicator {
+                display: flex;
+                bottom: 0.5rem;
+                gap: 0.2rem;
+                padding: 0.1rem 0.3rem;
+            }
+            .slide-indicator .dot {
+                width: 5px;
+                height: 5px;
+            }
+            .slide-indicator .dot.active {
+                width: 12px;
+            }
+            .swipe-hint {
+                display: flex;
+                bottom: 2rem;
+                font-size: 0.45rem;
             }
             .keyboard-hint { display: none; }
         }
@@ -954,9 +1082,9 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
 
-        /* Reducir animaciones en móviles para mejor rendimiento */
+        /* Reducir animaciones en móviles */
         @media (max-width: 768px) {
-            .fade-in {
+            .slide.active .slide-content > * {
                 animation-duration: 0.5s;
             }
             .icon-float, .icon-pulse, .icon-bounce,
@@ -970,7 +1098,7 @@
         }
 
         @media (max-width: 480px) {
-            .fade-in {
+            .slide.active .slide-content > * {
                 animation-duration: 0.4s;
             }
             .icon-float, .icon-pulse, .icon-bounce,
@@ -987,13 +1115,18 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
-            .fade-in {
+            .slide {
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                transform: none !important;
+            }
+            .slide.active .slide-content > * {
                 animation: none !important;
                 opacity: 1 !important;
+                transform: none !important;
             }
             .swipe-hint {
                 animation: none !important;
-                opacity: 0.4 !important;
+                opacity: 0.3 !important;
             }
         }
 
@@ -1018,28 +1151,26 @@
         ========================================================== -->
         <div class="slide active" data-slide="0">
             <div class="slide-content text-center">
-                <div class="fade-in">
-                    <div class="logo-container mb-3">
-                        <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
-                        <span class="text-[#FF6500] text-sm md:text-base font-bold tracking-widest uppercase font-['Barlow']">Trabajo de Grado — FP-UNA</span>
-                    </div>
-                    <h1 class="slide-title text-4xl md:text-6xl lg:text-7xl mt-1">
-                        Bracho<br><span class="highlight">Port System</span>
-                    </h1>
-                    <p class="text-lg md:text-2xl text-slate-300 mt-3 font-light leading-relaxed">
-                        Sistema de Gestión Integral para Empresas Tercerizadas<br class="hidden sm:block">
-                        de Mano de Obra en Operaciones de Carga Portuaria
-                    </p>
-                    <div class="mt-6 flex flex-wrap justify-center gap-3 md:gap-4 text-sm md:text-base text-slate-400">
-                        <span><i class="fa-solid fa-user-graduate text-[#FF6500] mr-2 icon-float"></i>Rodrigo Bracho</span>
-                        <span><i class="fa-solid fa-chalkboard-user text-[#FF6500] mr-2 icon-pulse"></i>Asesor: Christian Schaerer</span>
-                        <span><i class="fa-regular fa-calendar text-[#FF6500] mr-2 icon-bounce"></i>2026</span>
-                    </div>
-                    <div class="mt-5 flex flex-wrap justify-center gap-2 md:gap-3">
-                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-full text-xs md:text-sm font-bold text-[#FF6500] icon-glow">PHP • Laravel</span>
-                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-pulse">MySQL</span>
-                        <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-spin">MVC</span>
-                    </div>
+                <div class="logo-container mb-3">
+                    <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
+                    <span class="text-[#FF6500] text-sm md:text-base font-bold tracking-widest uppercase font-['Barlow']">Trabajo de Grado — FP-UNA</span>
+                </div>
+                <h1 class="slide-title text-4xl md:text-6xl lg:text-7xl mt-1">
+                    Bracho<br><span class="highlight">Port System</span>
+                </h1>
+                <p class="text-lg md:text-2xl text-slate-300 mt-3 font-light leading-relaxed">
+                    Sistema de Gestión Integral para Empresas Tercerizadas<br class="hidden sm:block">
+                    de Mano de Obra en Operaciones de Carga Portuaria
+                </p>
+                <div class="mt-6 flex flex-wrap justify-center gap-3 md:gap-4 text-sm md:text-base text-slate-400">
+                    <span><i class="fa-solid fa-user-graduate text-[#FF6500] mr-2 icon-float"></i>Rodrigo Bracho</span>
+                    <span><i class="fa-solid fa-chalkboard-user text-[#FF6500] mr-2 icon-pulse"></i>Asesor: Christian Schaerer</span>
+                    <span><i class="fa-regular fa-calendar text-[#FF6500] mr-2 icon-bounce"></i>2026</span>
+                </div>
+                <div class="mt-5 flex flex-wrap justify-center gap-2 md:gap-3">
+                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-full text-xs md:text-sm font-bold text-[#FF6500] icon-glow">PHP • Laravel</span>
+                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-pulse">MySQL</span>
+                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-spin">MVC</span>
                 </div>
             </div>
         </div>
@@ -1050,7 +1181,7 @@
         <div class="slide" data-slide="1">
             <div class="slide-content">
                 <div class="two-col">
-                    <div class="col-left fade-in">
+                    <div class="col-left">
                         <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Contexto</span>
                         <h2>El <span class="text-[#FF6500]">Desafío</span> Logístico</h2>
                         <p>
@@ -1062,7 +1193,7 @@
                             <li><i class="fa-solid fa-circle-check text-[#FF6500] mr-2 icon-bounce" style="animation-delay:0.6s;"></i>Control financiero y contable</li>
                         </ul>
                     </div>
-                    <div class="col-right fade-in delay-1">
+                    <div class="col-right">
                         <div class="highlight-box">
                             <p><i class="fa-solid fa-triangle-exclamation text-[#FF6500] mr-2 icon-pulse"></i><strong> Ineficiencias operativas</strong><br>Cálculo manual de calado y distribución de peso.</p>
                         </div>
@@ -1085,21 +1216,21 @@
         ========================================================== -->
         <div class="slide" data-slide="2">
             <div class="slide-content">
-                <div class="fade-in">
+                <div>
                     <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Pregunta de Investigación</span>
                     <p class="text-base md:text-xl lg:text-2xl text-slate-200 mt-1.5 font-light leading-relaxed max-w-4xl">
                         <i class="fa-solid fa-question-circle text-[#FF6500] mr-2 md:mr-3 icon-wiggle"></i>
                         ¿Cómo optimizar el proceso de carga de barcazas graneleras, la logística de traslado del personal y la gestión integral de una empresa tercerizada de servicios portuarios mediante un sistema informático?
                     </p>
                 </div>
-                <div class="mt-4 md:mt-6 fade-in delay-1">
+                <div class="mt-4 md:mt-6">
                     <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Objetivo General</span>
                     <p class="text-sm md:text-lg text-slate-300 mt-1 leading-relaxed max-w-4xl">
                         <i class="fa-solid fa-bullseye text-[#FF6500] mr-2 md:mr-3 icon-spin"></i>
                         Desarrollar un sistema informático de gestión integral para empresas tercerizadas de servicios portuarios que permita optimizar el proceso de carga de barcazas graneleras, coordinar la distribución de rutas de recogida del personal, gestionar el capital humano y controlar los procesos administrativos, de facturación y contabilidad en un entorno unificado.
                     </p>
                 </div>
-                <div class="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 fade-in delay-2">
+                <div class="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                     <div class="flex items-center gap-2 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-lg border border-white/5 hover:bg-white/10 transition">
                         <i class="fa-solid fa-ship text-[#FF6500] text-lg md:text-xl icon-float"></i>
                         <span class="text-xs md:text-sm text-slate-300">Optimización de carga</span>
@@ -1125,8 +1256,8 @@
         ========================================================== -->
         <div class="slide" data-slide="3">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Objetivos Específicos</span>
-                <ul class="objective-list fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Objetivos Específicos</span>
+                <ul class="objective-list">
                     <li>
                         <i class="fa-solid fa-lock icon-float"></i>
                         <span><strong class="text-white">Roles y Seguridad</strong><br class="hidden sm:block">Gestión de accesos para 7 perfiles</span>
@@ -1148,7 +1279,7 @@
                         <span><strong class="text-white">Panel de Cliente</strong><br class="hidden sm:block">Monitoreo en tiempo real</span>
                     </li>
                 </ul>
-                <div class="mt-3 md:mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 fade-in delay-2">
+                <div class="mt-3 md:mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
                     <div class="bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-lg p-2 md:p-3 text-center hover:bg-[#FF6500]/20 transition">
                         <div class="text-xl md:text-2xl font-bold text-[#FF6500]">7</div>
                         <div class="text-[10px] md:text-xs text-slate-400">Roles</div>
@@ -1174,8 +1305,8 @@
         ========================================================== -->
         <div class="slide" data-slide="4">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Arquitectura del Sistema</span>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 flex-1 items-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Arquitectura del Sistema</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 flex-1 items-center">
                     <div>
                         <h3 class="text-lg md:text-xl font-bold text-white font-['Barlow']">Modelo <span class="text-[#FF6500]">MVC</span> con Laravel</h3>
                         <ul class="mt-3 md:mt-4 space-y-2 md:space-y-3 text-xs md:text-sm text-slate-300">
@@ -1231,8 +1362,8 @@
         ========================================================== -->
         <div class="slide" data-slide="5">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Módulos Funcionales</span>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 flex-1 content-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Módulos Funcionales</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 flex-1 content-center">
                     <div class="card">
                         <div class="icon icon-anchor"><i class="fa-solid fa-anchor"></i></div>
                         <h4>Núcleo Operativo de Carga</h4>
@@ -1262,8 +1393,8 @@
         ========================================================== -->
         <div class="slide" data-slide="6">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Matriz de Roles y Permisos</span>
-                <div class="role-grid fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Matriz de Roles y Permisos</span>
+                <div class="role-grid">
                     <div class="role-item">
                         <i class="fa-solid fa-user-gear icon-spin"></i>
                         <span class="role-name">Superusuario</span>
@@ -1300,7 +1431,7 @@
                         <span class="role-desc">Recepción de EPIs</span>
                     </div>
                 </div>
-                <div class="mt-3 md:mt-4 text-center text-[10px] md:text-xs text-slate-500 fade-in delay-2">
+                <div class="mt-3 md:mt-4 text-center text-[10px] md:text-xs text-slate-500">
                     <i class="fa-solid fa-check-circle text-[#FF6500] icon-bounce"></i>
                     Control de acceso granular por perfil
                     <span class="mx-1 md:mx-2">•</span>
@@ -1315,8 +1446,8 @@
         ========================================================== -->
         <div class="slide" data-slide="7">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Tecnología Utilizada</span>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 flex-1 content-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Tecnología Utilizada</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 flex-1 content-center">
                     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
                         <i class="fa-brands fa-php text-4xl md:text-5xl text-[#777BB4] icon-float"></i>
                         <h4 class="text-lg md:text-xl font-bold text-white mt-2 md:mt-3 font-['Barlow']">PHP 8.x</h4>
@@ -1333,7 +1464,7 @@
                         <p class="text-[10px] md:text-sm text-slate-400">Base de datos relacional</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 mt-3 md:mt-4 fade-in delay-2">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 mt-3 md:mt-4">
                     <div class="text-center text-[10px] md:text-xs text-slate-500 bg-white/5 p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition">
                         <i class="fa-brands fa-html5 text-[#E34F26] text-base md:text-lg icon-float"></i> HTML5
                     </div>
@@ -1355,8 +1486,8 @@
         ========================================================== -->
         <div class="slide" data-slide="8">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Justificación</span>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 flex-1 content-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Justificación</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 flex-1 content-center">
                     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-center hover:bg-white/10 transition">
                         <i class="fa-solid fa-gear text-2xl md:text-3xl text-[#FF6500] icon-spin"></i>
                         <h4 class="font-bold text-white mt-2 md:mt-3 font-['Barlow'] text-sm md:text-base">Operativa</h4>
@@ -1373,7 +1504,7 @@
                         <p class="text-[10px] md:text-sm text-slate-400 mt-0.5 md:mt-1">Gestión de EPIs con registro de entrega y firma digital.</p>
                     </div>
                 </div>
-                <div class="mt-2 md:mt-4 text-center text-[11px] md:text-sm text-slate-400 fade-in delay-2">
+                <div class="mt-2 md:mt-4 text-center text-[11px] md:text-sm text-slate-400">
                     <i class="fa-solid fa-building text-[#FF6500] mr-2 icon-bounce"></i>
                     Caso real: HO Estibajes y Marítimos S.R.L. — Londrina S.A.
                 </div>
@@ -1385,8 +1516,8 @@
         ========================================================== -->
         <div class="slide" data-slide="9">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Alcance y Limitaciones</span>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 flex-1 content-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Alcance y Limitaciones</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 flex-1 content-center">
                     <div>
                         <h4 class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow']"><i class="fa-solid fa-check-circle mr-2 icon-float"></i>Alcance</h4>
                         <ul class="mt-2 md:mt-3 space-y-1.5 md:space-y-2 text-xs md:text-sm text-slate-300">
@@ -1415,8 +1546,8 @@
         ========================================================== -->
         <div class="slide" data-slide="10">
             <div class="slide-content">
-                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow'] fade-in">Cronograma 2026</span>
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 md:gap-3 flex-1 content-center fade-in delay-1">
+                <span class="text-[#FF6500] text-xs md:text-sm font-bold tracking-widest uppercase font-['Barlow']">Cronograma 2026</span>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 md:gap-3 flex-1 content-center">
                     <div class="bg-white/5 border border-white/10 rounded-xl p-2.5 md:p-4 text-center hover:bg-white/10 transition">
                         <div class="text-base md:text-lg font-bold text-[#FF6500] font-['Barlow'] icon-float">Feb</div>
                         <div class="text-[9px] md:text-xs text-slate-400 mt-0.5">Elección y validación</div>
@@ -1438,7 +1569,7 @@
                         <div class="text-[9px] md:text-xs text-slate-300 mt-0.5"><strong>Parcial 2</strong><br>Documentación</div>
                     </div>
                 </div>
-                <div class="mt-2 md:mt-4 text-center text-[10px] md:text-sm text-slate-400 fade-in delay-2">
+                <div class="mt-2 md:mt-4 text-center text-[10px] md:text-sm text-slate-400">
                     <i class="fa-regular fa-calendar-check text-[#FF6500] mr-1 md:mr-2 icon-bounce"></i>
                     Tutorías: viernes 09:00–11:00
                     <span class="mx-1 md:mx-2">•</span>
@@ -1453,7 +1584,7 @@
         ========================================================== -->
         <div class="slide" data-slide="11">
             <div class="slide-content text-center">
-                <div class="fade-in">
+                <div>
                     <div class="logo-container justify-center mb-3">
                         <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
                     </div>
@@ -1597,7 +1728,7 @@
                 
                 setTimeout(() => {
                     isAnimating = false;
-                }, 400);
+                }, 600);
             }
 
             function nextSlide() {
@@ -1610,7 +1741,7 @@
 
             // Keyboard navigation
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
                     e.preventDefault();
                     nextSlide();
                 } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
@@ -1669,7 +1800,7 @@
                 }
             }, { passive: true });
 
-            // Click on dots (solo móviles)
+            // Click on dots
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', function(e) {
                     e.preventDefault();
