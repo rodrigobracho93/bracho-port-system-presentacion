@@ -14,6 +14,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- No se requieren librerías externas para exportar PDF -->
+
     <style>
         /* ========== RESET & BASE ========== */
         * {
@@ -1082,6 +1084,45 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
 
+        /* ========== BOTÓN EXPORTAR PDF ========== */
+        .btn-export-pdf-top {
+            position: absolute;
+            top: -0.5rem;
+            right: 0;
+            background: rgba(255, 101, 0, 0.15);
+            color: #FF6500;
+            border: 1px solid rgba(255, 101, 0, 0.25);
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        .btn-export-pdf-top:hover {
+            background: rgba(255, 101, 0, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 101, 0, 0.2);
+        }
+        .btn-export-pdf-top:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        @media (max-width: 768px) {
+            .btn-export-pdf-top {
+                width: 1.8rem;
+                height: 1.8rem;
+                font-size: 0.9rem;
+                top: -0.3rem;
+                right: 0;
+            }
+        }
         /* Reducir animaciones en móviles */
         @media (max-width: 768px) {
             .slide.active .slide-content > * {
@@ -1130,6 +1171,59 @@
             }
         }
 
+        /* ========== PRINT - EXPORTAR PDF ========== */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+            html {
+                overflow: visible !important;
+                height: auto !important;
+            }
+            body {
+                overflow: visible !important;
+                height: auto !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .slide {
+                position: relative !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+                page-break-after: always;
+                break-after: page;
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+            }
+            .slide:last-child {
+                page-break-after: auto;
+                break-after: auto;
+            }
+            .slide-container {
+                height: auto !important;
+                overflow: visible !important;
+            }
+            .slide-indicator,
+            .swipe-hint,
+            .keyboard-hint,
+            .ocean-container,
+            .btn-export-pdf-top,
+            .btn-export,
+            .export-status {
+                display: none !important;
+            }
+            .slide.active .slide-content > * {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
         /* ========== SCROLLBAR ========== */
         ::-webkit-scrollbar {
             display: none;
@@ -1151,9 +1245,14 @@
         ========================================================== -->
         <div class="slide active" data-slide="0">
             <div class="slide-content text-center">
-                <div class="logo-container mb-3">
-                    <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
-                    <span class="text-[#FF6500] text-sm md:text-base font-bold tracking-widest uppercase font-['Barlow']">Trabajo de Grado — FP-UNA</span>
+                <div class="relative">
+                    <div class="logo-container mb-3">
+                        <img src="./images/fpuna_logo_institucional.png" alt="Facultad Politécnica - UNA" class="logo-institucional" loading="lazy">
+                        <span class="text-[#FF6500] text-sm md:text-base font-bold tracking-widest uppercase font-['Barlow']">Trabajo de Grado — FP-UNA</span>
+                    </div>
+                    <button class="btn-export-pdf-top" id="btnExportarPDFTop" onclick="exportPDF(this)" title="Exportar PDF">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </button>
                 </div>
                 <h1 class="slide-title text-4xl md:text-6xl lg:text-7xl mt-1">
                     Bracho<br><span class="highlight">Port System</span>
@@ -1170,7 +1269,7 @@
                 <div class="mt-5 flex flex-wrap justify-center gap-2 md:gap-3">
                     <span class="px-3 py-1.5 md:px-4 md:py-2 bg-[#FF6500]/10 border border-[#FF6500]/20 rounded-full text-xs md:text-sm font-bold text-[#FF6500] icon-glow">PHP • Laravel</span>
                     <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-pulse">MySQL</span>
-                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300 icon-spin">MVC</span>
+                    <span class="px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-xs md:text-sm font-bold text-slate-300">MVC</span>
                 </div>
             </div>
         </div>
@@ -1839,6 +1938,108 @@
                 }
                 e.preventDefault();
             }, { passive: false });
+
+            // ============================================================
+            // EXPORTAR PRESENTACIÓN A PDF
+            // ============================================================
+            function exportPDF(btnEl) {
+                // Guardar estilos originales para restaurar después
+                const slidesArr = Array.from(slides);
+                const container = document.querySelector('.slide-container');
+                const uiElements = document.querySelectorAll(
+                    '.slide-indicator, .swipe-hint, .keyboard-hint, .ocean-container, ' +
+                    '.btn-export-pdf-top, .btn-export, .export-status'
+                );
+
+                const origStyles = slidesArr.map(s => ({
+                    position: s.style.position,
+                    opacity: s.style.opacity,
+                    visibility: s.style.visibility,
+                    transform: s.style.transform,
+                    height: s.style.height,
+                    width: s.style.width
+                }));
+                const htmlEl = document.documentElement;
+                const htmlOrig = {
+                    overflow: htmlEl.style.overflow,
+                    height: htmlEl.style.height
+                };
+                const bodyOrig = {
+                    overflow: document.body.style.overflow,
+                    height: document.body.style.height
+                };
+                const containerOrig = {
+                    height: container.style.height,
+                    overflow: container.style.overflow
+                };
+                const uiOrigDisplay = Array.from(uiElements).map(el => el.style.display);
+
+                // Preparar todo para impresión: todas las diapositivas visibles en bloque
+                slidesArr.forEach(s => {
+                    s.style.position = 'relative';
+                    s.style.opacity = '1';
+                    s.style.visibility = 'visible';
+                    s.style.transform = 'none';
+                    s.style.transition = 'none';
+                    s.style.height = '100vh';
+                    s.style.width = '100vw';
+                    s.style.pageBreakAfter = 'always';
+                    s.style.breakAfter = 'page';
+                    s.style.overflow = 'hidden';
+                });
+                if (slidesArr.length > 0) {
+                    slidesArr[slidesArr.length - 1].style.pageBreakAfter = 'auto';
+                    slidesArr[slidesArr.length - 1].style.breakAfter = 'auto';
+                }
+
+                htmlEl.style.overflow = 'visible';
+                htmlEl.style.height = 'auto';
+                document.body.style.overflow = 'visible';
+                document.body.style.height = 'auto';
+                container.style.height = 'auto';
+                container.style.overflow = 'visible';
+
+                uiElements.forEach(el => { el.style.display = 'none'; });
+
+                // Pequeña pausa para que el DOM se actualice
+                requestAnimationFrame(() => {
+                    window.print();
+                });
+
+                // Restaurar cuando se cierre el diálogo de impresión
+                function restore() {
+                    slidesArr.forEach((s, i) => {
+                        s.style.position = origStyles[i].position;
+                        s.style.opacity = origStyles[i].opacity;
+                        s.style.visibility = origStyles[i].visibility;
+                        s.style.transform = origStyles[i].transform;
+                        s.style.height = origStyles[i].height;
+                        s.style.width = origStyles[i].width;
+                        s.style.pageBreakAfter = '';
+                        s.style.breakAfter = '';
+                        s.style.overflow = '';
+                    });
+                    htmlEl.style.overflow = htmlOrig.overflow;
+                    htmlEl.style.height = htmlOrig.height;
+                    document.body.style.overflow = bodyOrig.overflow;
+                    document.body.style.height = bodyOrig.height;
+                    container.style.height = containerOrig.height;
+                    container.style.overflow = containerOrig.overflow;
+                    uiElements.forEach((el, i) => { el.style.display = uiOrigDisplay[i]; });
+                    goToSlide(0);
+                    window.removeEventListener('afterprint', restore);
+                }
+
+                window.addEventListener('afterprint', restore);
+                // Fallback: restaurar después de 30s si afterprint no se dispara
+                setTimeout(() => {
+                    window.removeEventListener('afterprint', restore);
+                    restore();
+                }, 30000);
+            }
+
+            // Expose exportPDF globally for the onclick attribute
+            window.exportPDF = exportPDF;
         });
     </script>
 
